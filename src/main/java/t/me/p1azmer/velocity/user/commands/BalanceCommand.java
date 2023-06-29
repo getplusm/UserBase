@@ -30,7 +30,7 @@ public class BalanceCommand implements SimpleCommand {
                 try {
                     basedPlayer = this.playerDao.createIfNotExists(new BasedPlayer(player));
                 } catch (SQLException e) {
-                    source.sendMessage(Component.text("&cОшибка с базой данных. Перезайдите!"));
+                    source.sendMessage(Component.text("&cРћС€РёР±РєР° СЃ Р±Р°Р·РѕР№ РґР°РЅРЅС‹С…. РџРµСЂРµР·Р°Р№РґРёС‚Рµ!"));
                     throw new RuntimeException(e);
                 }
             }

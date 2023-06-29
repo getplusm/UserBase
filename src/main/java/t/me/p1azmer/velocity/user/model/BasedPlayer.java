@@ -138,12 +138,12 @@ public class BasedPlayer {
     }
 
     public void addAchievement(String name, Object value) {
-        Achievement achievement = new Achievement(name, value, "От администрации");
+        Achievement achievement = new Achievement(name, value, "РћС‚ Р°РґРјРёРЅРёСЃС‚СЂР°С†РёРё");
         this.getAchievements().add(achievement);
     }
 
     public void addAchievement(String name, Object value, String from) {
-        Achievement achievement = new Achievement(name, value, (from == null ? "От администрации" : from));
+        Achievement achievement = new Achievement(name, value, (from == null ? "РћС‚ Р°РґРјРёРЅРёСЃС‚СЂР°С†РёРё" : from));
         this.getAchievements().add(achievement);
     }
 

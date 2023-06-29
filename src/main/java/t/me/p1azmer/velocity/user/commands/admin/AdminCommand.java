@@ -23,8 +23,8 @@ import java.util.stream.Stream;
 
 public class AdminCommand implements SimpleCommand {
 
-    private static final Component AVAILABLE_SUBCOMMANDS_MESSAGE = Component.text("Доступные подкоманды:", NamedTextColor.WHITE);
-    private static final Component NO_AVAILABLE_SUBCOMMANDS_MESSAGE = Component.text("Простите, но для вас нет подкоманд.", NamedTextColor.WHITE);
+    private static final Component AVAILABLE_SUBCOMMANDS_MESSAGE = Component.text("Р”РѕСЃС‚СѓРїРЅС‹Рµ РїРѕРґРєРѕРјР°РЅРґС‹:", NamedTextColor.WHITE);
+    private static final Component NO_AVAILABLE_SUBCOMMANDS_MESSAGE = Component.text("РџСЂРѕСЃС‚РёС‚Рµ, РЅРѕ РґР»СЏ РІР°СЃ РЅРµС‚ РїРѕРґРєРѕРјР°РЅРґ.", NamedTextColor.WHITE);
 
     private final BasePlugin plugin;
     private final Dao<BasedPlayer, String> playerDao;
@@ -110,117 +110,117 @@ public class AdminCommand implements SimpleCommand {
 
     //TODO: Rework all message with Config.Messages
     private enum Subcommand {
-        RELOAD("Перезапустить плагин", CommandPermissionState.HAS,
+        RELOAD("РџРµСЂРµР·Р°РїСѓСЃС‚РёС‚СЊ РїР»Р°РіРёРЅ", CommandPermissionState.HAS,
                 (parent, source, args) -> {
                     parent.plugin.reload();
-                    source.sendMessage(Component.text("Плагин успешно перезагружен", NamedTextColor.GREEN));
+                    source.sendMessage(Component.text("РџР»Р°РіРёРЅ СѓСЃРїРµС€РЅРѕ РїРµСЂРµР·Р°РіСЂСѓР¶РµРЅ", NamedTextColor.GREEN));
                 }
         ),
-        REMOVE_BALANCE("Удалить баланс у игрока. [имя] [кол-во]", CommandPermissionState.HAS,
+        REMOVE_BALANCE("РЈРґР°Р»РёС‚СЊ Р±Р°Р»Р°РЅСЃ Сѓ РёРіСЂРѕРєР°. [РёРјСЏ] [РєРѕР»-РІРѕ]", CommandPermissionState.HAS,
                 (AdminCommand parent, CommandSource source, String[] args) -> {
                     if (args.length < 3) {
-                        source.sendMessage(Component.text("Укажите имя игрока и кол-во валюты!", NamedTextColor.RED));
+                        source.sendMessage(Component.text("РЈРєР°Р¶РёС‚Рµ РёРјСЏ РёРіСЂРѕРєР° Рё РєРѕР»-РІРѕ РІР°Р»СЋС‚С‹!", NamedTextColor.RED));
                         return;
                     }
                     String userName = args[1];
                     int value = Integer.parseInt(args[2]);
                     if (value <= 0) {
-                        source.sendMessage(Component.text("Вы указали неверное кол-во!", NamedTextColor.RED));
+                        source.sendMessage(Component.text("Р’С‹ СѓРєР°Р·Р°Р»Рё РЅРµРІРµСЂРЅРѕРµ РєРѕР»-РІРѕ!", NamedTextColor.RED));
                         return;
                     }
                     BasedPlayer basedPlayer = BasePlugin.fetchInfo(parent.playerDao, userName);
                     if (basedPlayer == null) {
-                        source.sendMessage(Component.text("Игрок с ником '" + userName + "' не найден!"));
+                        source.sendMessage(Component.text("РРіСЂРѕРє СЃ РЅРёРєРѕРј '" + userName + "' РЅРµ РЅР°Р№РґРµРЅ!"));
                         return;
                     }
                     try {
                         boolean incorrect = false;
                         if (basedPlayer.getBalance() < value) {
-                            source.sendMessage(Component.text("Баланс игрока меньше чем указанное число. Баланс установлен на 0", NamedTextColor.WHITE));
+                            source.sendMessage(Component.text("Р‘Р°Р»Р°РЅСЃ РёРіСЂРѕРєР° РјРµРЅСЊС€Рµ С‡РµРј СѓРєР°Р·Р°РЅРЅРѕРµ С‡РёСЃР»Рѕ. Р‘Р°Р»Р°РЅСЃ СѓСЃС‚Р°РЅРѕРІР»РµРЅ РЅР° 0", NamedTextColor.WHITE));
                             incorrect = true;
                         }
                         basedPlayer.removeBalance(value);
                         parent.playerDao.update(basedPlayer);
                         if (!incorrect)
-                            source.sendMessage(Component.text("Баланс игрока уменьшен на " + value + " монет. Настоящий баланс: " + basedPlayer.getBalance(), NamedTextColor.WHITE));
+                            source.sendMessage(Component.text("Р‘Р°Р»Р°РЅСЃ РёРіСЂРѕРєР° СѓРјРµРЅСЊС€РµРЅ РЅР° " + value + " РјРѕРЅРµС‚. РќР°СЃС‚РѕСЏС‰РёР№ Р±Р°Р»Р°РЅСЃ: " + basedPlayer.getBalance(), NamedTextColor.WHITE));
                     } catch (SQLException e) {
-                        source.sendMessage(Component.text("Ошибка с обновлением данных игрока. Смотрите в консоль", NamedTextColor.RED));
+                        source.sendMessage(Component.text("РћС€РёР±РєР° СЃ РѕР±РЅРѕРІР»РµРЅРёРµРј РґР°РЅРЅС‹С… РёРіСЂРѕРєР°. РЎРјРѕС‚СЂРёС‚Рµ РІ РєРѕРЅСЃРѕР»СЊ", NamedTextColor.RED));
                         throw new RuntimeException(e);
                     }
                 }),
-        ADD_BALANCE("Добавить баланс игроку. [имя] [кол-во]", CommandPermissionState.HAS,
+        ADD_BALANCE("Р”РѕР±Р°РІРёС‚СЊ Р±Р°Р»Р°РЅСЃ РёРіСЂРѕРєСѓ. [РёРјСЏ] [РєРѕР»-РІРѕ]", CommandPermissionState.HAS,
                 (AdminCommand parent, CommandSource source, String[] args) -> {
                     if (args.length < 3) {
-                        source.sendMessage(Component.text("Укажите имя игрока и кол-во валюты!", NamedTextColor.RED));
+                        source.sendMessage(Component.text("РЈРєР°Р¶РёС‚Рµ РёРјСЏ РёРіСЂРѕРєР° Рё РєРѕР»-РІРѕ РІР°Р»СЋС‚С‹!", NamedTextColor.RED));
                         return;
                     }
                     String userName = args[1];
                     int value = Integer.parseInt(args[2]);
                     if (value <= 0) {
-                        source.sendMessage(Component.text("Вы указали неверное кол-во!", NamedTextColor.RED));
+                        source.sendMessage(Component.text("Р’С‹ СѓРєР°Р·Р°Р»Рё РЅРµРІРµСЂРЅРѕРµ РєРѕР»-РІРѕ!", NamedTextColor.RED));
                         return;
                     }
                     BasedPlayer basedPlayer = BasePlugin.fetchInfo(parent.playerDao, userName);
                     if (basedPlayer == null) {
-                        source.sendMessage(Component.text("Игрок с ником '" + userName + "' не найден!"));
+                        source.sendMessage(Component.text("РРіСЂРѕРє СЃ РЅРёРєРѕРј '" + userName + "' РЅРµ РЅР°Р№РґРµРЅ!"));
                         return;
                     }
                     try {
                         basedPlayer.addBalance(value);
                         parent.playerDao.update(basedPlayer);
-                        source.sendMessage(Component.text("Баланс игрока увеличен на " + value + " монет. Настоящий баланс: " + basedPlayer.getBalance(), NamedTextColor.WHITE));
+                        source.sendMessage(Component.text("Р‘Р°Р»Р°РЅСЃ РёРіСЂРѕРєР° СѓРІРµР»РёС‡РµРЅ РЅР° " + value + " РјРѕРЅРµС‚. РќР°СЃС‚РѕСЏС‰РёР№ Р±Р°Р»Р°РЅСЃ: " + basedPlayer.getBalance(), NamedTextColor.WHITE));
                     } catch (SQLException e) {
-                        source.sendMessage(Component.text("Ошибка с обновлением данных игрока. Смотрите в консоль", NamedTextColor.RED));
+                        source.sendMessage(Component.text("РћС€РёР±РєР° СЃ РѕР±РЅРѕРІР»РµРЅРёРµРј РґР°РЅРЅС‹С… РёРіСЂРѕРєР°. РЎРјРѕС‚СЂРёС‚Рµ РІ РєРѕРЅСЃРѕР»СЊ", NamedTextColor.RED));
                         throw new RuntimeException(e);
                     }
                 }),
-        SET_BALANCE("Установить баланс игроку. [имя] [кол-во]", CommandPermissionState.HAS,
+        SET_BALANCE("РЈСЃС‚Р°РЅРѕРІРёС‚СЊ Р±Р°Р»Р°РЅСЃ РёРіСЂРѕРєСѓ. [РёРјСЏ] [РєРѕР»-РІРѕ]", CommandPermissionState.HAS,
                 (AdminCommand parent, CommandSource source, String[] args) -> {
                     if (args.length < 3) {
-                        source.sendMessage(Component.text("Укажите имя игрока и кол-во валюты!", NamedTextColor.RED));
+                        source.sendMessage(Component.text("РЈРєР°Р¶РёС‚Рµ РёРјСЏ РёРіСЂРѕРєР° Рё РєРѕР»-РІРѕ РІР°Р»СЋС‚С‹!", NamedTextColor.RED));
                         return;
                     }
                     String userName = args[1];
                     int value = Integer.parseInt(args[2]);
                     if (value <= -1) {
-                        source.sendMessage(Component.text("Вы указали неверное кол-во!", NamedTextColor.RED));
+                        source.sendMessage(Component.text("Р’С‹ СѓРєР°Р·Р°Р»Рё РЅРµРІРµСЂРЅРѕРµ РєРѕР»-РІРѕ!", NamedTextColor.RED));
                         return;
                     }
                     BasedPlayer basedPlayer = BasePlugin.fetchInfo(parent.playerDao, userName);
                     if (basedPlayer == null) {
-                        source.sendMessage(Component.text("Игрок с ником '" + userName + "' не найден!"));
+                        source.sendMessage(Component.text("РРіСЂРѕРє СЃ РЅРёРєРѕРј '" + userName + "' РЅРµ РЅР°Р№РґРµРЅ!"));
                         return;
                     }
                     try {
                         basedPlayer.setBalance(value);
                         parent.playerDao.update(basedPlayer);
-                        source.sendMessage(Component.text("Баланс игрока установлен на " + value + " монет", NamedTextColor.WHITE));
+                        source.sendMessage(Component.text("Р‘Р°Р»Р°РЅСЃ РёРіСЂРѕРєР° СѓСЃС‚Р°РЅРѕРІР»РµРЅ РЅР° " + value + " РјРѕРЅРµС‚", NamedTextColor.WHITE));
                     } catch (SQLException e) {
-                        source.sendMessage(Component.text("Ошибка с обновлением данных игрока. Смотрите в консоль", NamedTextColor.RED));
+                        source.sendMessage(Component.text("РћС€РёР±РєР° СЃ РѕР±РЅРѕРІР»РµРЅРёРµРј РґР°РЅРЅС‹С… РёРіСЂРѕРєР°. РЎРјРѕС‚СЂРёС‚Рµ РІ РєРѕРЅСЃРѕР»СЊ", NamedTextColor.RED));
                         throw new RuntimeException(e);
                     }
                 }),
-        SET_GROUP("Установить группу игроку. [имя] [группа]", CommandPermissionState.HAS,
+        SET_GROUP("РЈСЃС‚Р°РЅРѕРІРёС‚СЊ РіСЂСѓРїРїСѓ РёРіСЂРѕРєСѓ. [РёРјСЏ] [РіСЂСѓРїРїР°]", CommandPermissionState.HAS,
                 (AdminCommand parent, CommandSource source, String[] args) -> {
                     if (args.length < 3) {
-                        source.sendMessage(Component.text("Укажите имя игрока и название группы!", NamedTextColor.RED));
+                        source.sendMessage(Component.text("РЈРєР°Р¶РёС‚Рµ РёРјСЏ РёРіСЂРѕРєР° Рё РЅР°Р·РІР°РЅРёРµ РіСЂСѓРїРїС‹!", NamedTextColor.RED));
                         return;
                     }
                     String userName = args[1];
                     String value = args[2];
                     Group group = LuckpermsHook.getGroup(value);
                     if (group == null) {
-                        source.sendMessage(Component.text("Указанная вами группа не найдена в LP", NamedTextColor.RED));
+                        source.sendMessage(Component.text("РЈРєР°Р·Р°РЅРЅР°СЏ РІР°РјРё РіСЂСѓРїРїР° РЅРµ РЅР°Р№РґРµРЅР° РІ LP", NamedTextColor.RED));
                         return;
                     }
                     BasedPlayer basedPlayer = BasePlugin.fetchInfo(parent.playerDao, userName);
                     if (basedPlayer == null) {
-                        source.sendMessage(Component.text("Игрок с ником '" + userName + "' не найден!"));
+                        source.sendMessage(Component.text("РРіСЂРѕРє СЃ РЅРёРєРѕРј '" + userName + "' РЅРµ РЅР°Р№РґРµРЅ!"));
                         return;
                     }
                     User user = LuckpermsHook.getUser(basedPlayer.getId());
                     if (user == null) {
-                        source.sendMessage(Component.text("Игрок с ником '" + userName + "' не найден в базе LP!", NamedTextColor.RED));
+                        source.sendMessage(Component.text("РРіСЂРѕРє СЃ РЅРёРєРѕРј '" + userName + "' РЅРµ РЅР°Р№РґРµРЅ РІ Р±Р°Р·Рµ LP!", NamedTextColor.RED));
                         return;
                     }
                     InheritanceNode node = InheritanceNode.builder(group).build();
@@ -230,7 +230,7 @@ public class AdminCommand implements SimpleCommand {
                             .map(InheritanceNode::getGroupName)
                             .collect(Collectors.toSet());
                     if (groups.contains(group.getName())) {
-                        source.sendMessage(Component.text("Игрок с ником '" + userName + "' уже имеет права этой группы!", NamedTextColor.RED));
+                        source.sendMessage(Component.text("РРіСЂРѕРє СЃ РЅРёРєРѕРј '" + userName + "' СѓР¶Рµ РёРјРµРµС‚ РїСЂР°РІР° СЌС‚РѕР№ РіСЂСѓРїРїС‹!", NamedTextColor.RED));
                         return;
                     }
                     try {
@@ -239,19 +239,19 @@ public class AdminCommand implements SimpleCommand {
                             basedPlayer.setGroup(value);
                             parent.playerDao.update(basedPlayer);
                             LuckpermsHook.getPlugin().getUserManager().saveUser(user);
-                            source.sendMessage(Component.text("Группа игрока обновлена на " + value, NamedTextColor.WHITE));
+                            source.sendMessage(Component.text("Р“СЂСѓРїРїР° РёРіСЂРѕРєР° РѕР±РЅРѕРІР»РµРЅР° РЅР° " + value, NamedTextColor.WHITE));
                         } else {
-                            source.sendMessage(Component.text("Ошибка с установлением группы игроку. Ошибка: ", NamedTextColor.RED));
+                            source.sendMessage(Component.text("РћС€РёР±РєР° СЃ СѓСЃС‚Р°РЅРѕРІР»РµРЅРёРµРј РіСЂСѓРїРїС‹ РёРіСЂРѕРєСѓ. РћС€РёР±РєР°: ", NamedTextColor.RED));
                         }
                     } catch (SQLException e) {
-                        source.sendMessage(Component.text("Ошибка с обновлением данных игрока. Смотрите в консоль", NamedTextColor.RED));
+                        source.sendMessage(Component.text("РћС€РёР±РєР° СЃ РѕР±РЅРѕРІР»РµРЅРёРµРј РґР°РЅРЅС‹С… РёРіСЂРѕРєР°. РЎРјРѕС‚СЂРёС‚Рµ РІ РєРѕРЅСЃРѕР»СЊ", NamedTextColor.RED));
                         throw new RuntimeException(e);
                     }
                 }),
-        ADD_ACHIEVEMENT("Добавить достижение игроку. [имя] [название достижения] [значение] *[откуда получил]", CommandPermissionState.HAS,
+        ADD_ACHIEVEMENT("Р”РѕР±Р°РІРёС‚СЊ РґРѕСЃС‚РёР¶РµРЅРёРµ РёРіСЂРѕРєСѓ. [РёРјСЏ] [РЅР°Р·РІР°РЅРёРµ РґРѕСЃС‚РёР¶РµРЅРёСЏ] [Р·РЅР°С‡РµРЅРёРµ] *[РѕС‚РєСѓРґР° РїРѕР»СѓС‡РёР»]", CommandPermissionState.HAS,
                 (AdminCommand parent, CommandSource source, String[] args) -> {
                     if (args.length < 4) {
-                        source.sendMessage(Component.text("Укажите имя игрока, название достижения, значение и, если хотите, комментарий, откуда он его получил", NamedTextColor.RED));
+                        source.sendMessage(Component.text("РЈРєР°Р¶РёС‚Рµ РёРјСЏ РёРіСЂРѕРєР°, РЅР°Р·РІР°РЅРёРµ РґРѕСЃС‚РёР¶РµРЅРёСЏ, Р·РЅР°С‡РµРЅРёРµ Рё, РµСЃР»Рё С…РѕС‚РёС‚Рµ, РєРѕРјРјРµРЅС‚Р°СЂРёР№, РѕС‚РєСѓРґР° РѕРЅ РµРіРѕ РїРѕР»СѓС‡РёР»", NamedTextColor.RED));
                         return;
                     }
                     String userName = args[1];
@@ -261,22 +261,22 @@ public class AdminCommand implements SimpleCommand {
 
                     BasedPlayer basedPlayer = BasePlugin.fetchInfo(parent.playerDao, userName);
                     if (basedPlayer == null) {
-                        source.sendMessage(Component.text("Игрок с ником '" + userName + "' не найден!"));
+                        source.sendMessage(Component.text("РРіСЂРѕРє СЃ РЅРёРєРѕРј '" + userName + "' РЅРµ РЅР°Р№РґРµРЅ!"));
                         return;
                     }
                     try {
                         basedPlayer.addAchievement(achievement, value, from);
                         parent.playerDao.update(basedPlayer);
-                        source.sendMessage(Component.text("Игроку '" + userName + "' добавлено достижение: " + achievement + ". Значение: " + value + "." + (from != null ? " Получено: " + from : ""), NamedTextColor.WHITE));
+                        source.sendMessage(Component.text("РРіСЂРѕРєСѓ '" + userName + "' РґРѕР±Р°РІР»РµРЅРѕ РґРѕСЃС‚РёР¶РµРЅРёРµ: " + achievement + ". Р—РЅР°С‡РµРЅРёРµ: " + value + "." + (from != null ? " РџРѕР»СѓС‡РµРЅРѕ: " + from : ""), NamedTextColor.WHITE));
                     } catch (SQLException e) {
-                        source.sendMessage(Component.text("Ошибка с обновлением данных игрока. Смотрите в консоль", NamedTextColor.RED));
+                        source.sendMessage(Component.text("РћС€РёР±РєР° СЃ РѕР±РЅРѕРІР»РµРЅРёРµРј РґР°РЅРЅС‹С… РёРіСЂРѕРєР°. РЎРјРѕС‚СЂРёС‚Рµ РІ РєРѕРЅСЃРѕР»СЊ", NamedTextColor.RED));
                         throw new RuntimeException(e);
                     }
                 }),
-        REMOVE_ACHIEVEMENT("Убрать достижение игроку. [имя] [название достижения]", CommandPermissionState.HAS,
+        REMOVE_ACHIEVEMENT("РЈР±СЂР°С‚СЊ РґРѕСЃС‚РёР¶РµРЅРёРµ РёРіСЂРѕРєСѓ. [РёРјСЏ] [РЅР°Р·РІР°РЅРёРµ РґРѕСЃС‚РёР¶РµРЅРёСЏ]", CommandPermissionState.HAS,
                 (AdminCommand parent, CommandSource source, String[] args) -> {
                     if (args.length < 3) {
-                        source.sendMessage(Component.text("Укажите имя игрока и название достижения!", NamedTextColor.RED));
+                        source.sendMessage(Component.text("РЈРєР°Р¶РёС‚Рµ РёРјСЏ РёРіСЂРѕРєР° Рё РЅР°Р·РІР°РЅРёРµ РґРѕСЃС‚РёР¶РµРЅРёСЏ!", NamedTextColor.RED));
                         return;
                     }
                     String userName = args[1];
@@ -284,21 +284,21 @@ public class AdminCommand implements SimpleCommand {
 
                     BasedPlayer basedPlayer = BasePlugin.fetchInfo(parent.playerDao, userName);
                     if (basedPlayer == null) {
-                        source.sendMessage(Component.text("Игрок с ником '" + userName + "' не найден!"));
+                        source.sendMessage(Component.text("РРіСЂРѕРє СЃ РЅРёРєРѕРј '" + userName + "' РЅРµ РЅР°Р№РґРµРЅ!"));
                         return;
                     }
 
                     if (basedPlayer.getAchievement(achievement) == null) {
-                        source.sendMessage(Component.text("Указанное вами достижение не найдено у пользователя!", NamedTextColor.RED));
+                        source.sendMessage(Component.text("РЈРєР°Р·Р°РЅРЅРѕРµ РІР°РјРё РґРѕСЃС‚РёР¶РµРЅРёРµ РЅРµ РЅР°Р№РґРµРЅРѕ Сѓ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ!", NamedTextColor.RED));
                         return;
                     }
 
                     try {
                         basedPlayer.removeAchievement(achievement);
                         parent.playerDao.update(basedPlayer);
-                        source.sendMessage(Component.text("Достижение '" + achievement + "' успешно удалено у игрока!", NamedTextColor.WHITE));
+                        source.sendMessage(Component.text("Р”РѕСЃС‚РёР¶РµРЅРёРµ '" + achievement + "' СѓСЃРїРµС€РЅРѕ СѓРґР°Р»РµРЅРѕ Сѓ РёРіСЂРѕРєР°!", NamedTextColor.WHITE));
                     } catch (SQLException e) {
-                        source.sendMessage(Component.text("Ошибка с обновлением данных игрока. Смотрите в консоль", NamedTextColor.RED));
+                        source.sendMessage(Component.text("РћС€РёР±РєР° СЃ РѕР±РЅРѕРІР»РµРЅРёРµРј РґР°РЅРЅС‹С… РёРіСЂРѕРєР°. РЎРјРѕС‚СЂРёС‚Рµ РІ РєРѕРЅСЃРѕР»СЊ", NamedTextColor.RED));
                         throw new RuntimeException(e);
                     }
                 }),

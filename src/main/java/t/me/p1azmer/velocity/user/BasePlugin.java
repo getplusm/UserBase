@@ -130,8 +130,8 @@ public class BasePlugin {
         eventManager.register(this, new JoinListener(this, this.playerDao));
 
         CommandManager manager = this.server.getCommandManager();
-        manager.register("balance", new BalanceCommand(this.playerDao), "bal", "бал", "баланс");
-        manager.register("achievement", new AchievementCommand(this.playerDao), "ach", "достижения", "достяги", "ачивки");
+        manager.register("balance", new BalanceCommand(this.playerDao), "bal", "Р±Р°Р»", "Р±Р°Р»Р°РЅСЃ");
+        manager.register("achievement", new AchievementCommand(this.playerDao), "ach", "РґРѕСЃС‚РёР¶РµРЅРёСЏ", "РґРѕСЃС‚СЏРіРё", "Р°С‡РёРІРєРё");
         manager.register("userbase", new AdminCommand(this, this.playerDao), "ub");
     }
 
